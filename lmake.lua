@@ -1,7 +1,9 @@
 lmake_compatibility_version(1)
 
 COMPILER = "/bin/clang"
+
 LINKER = "/bin/aarch64-linux-gnu-ld"
+
 CXX_FLAGS = "-Wall -nostdlib -ffreestanding -Isrc -Isrc/klib -Isrc/kernel -mgeneral-regs-only"
 ASM_FLAGS = "-Isrc -nostdlib"
 
