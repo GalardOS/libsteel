@@ -4,7 +4,7 @@ typedef void (*ctor)();
 extern "C" ctor start_ctors;
 extern "C" ctor end_ctors;
 
-extern "C" void cc_setup() {
+extern "C" void _start() {
     // Call the constructor of global
     //for(ctor* i = &start_ctors; i != &end_ctors; i++) {
     //    (*i)();

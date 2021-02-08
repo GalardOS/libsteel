@@ -1,7 +1,7 @@
 lmake_compatibility_version(1)
 
 COMPILER = "/bin/clang"
-LINKER = "/bin/ld.lld"
+LINKER = "/bin/aarch64-linux-gnu-ld"
 CXX_FLAGS = "-Wall -nostdlib -ffreestanding -Isrc -Isrc/klib -Isrc/kernel -mgeneral-regs-only"
 ASM_FLAGS = "-Isrc -nostdlib"
 
@@ -11,7 +11,7 @@ LLD_TARGET = ""
 
 if ARCH == "aarch64" then
     CLANG_TARGET = "--target=aarch64 "
-    LLD_TARGET = "-m aarch64elf "
+    --LLD_TARGET = "-m aarch64elf "
 end
 
 function build()
@@ -34,6 +34,13 @@ function build()
     lmake_link(obj_files)
 
     lmake_exec("aarch64-linux-gnu-objcopy bin/kernel.elf -O binary kernel8.img")
+end
+
+function qemu()
+    -- Build if no kernel is compiled
+    build()
+
+    lmake_exec("qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio")
 end
 
 function clean()
