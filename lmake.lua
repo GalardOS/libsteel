@@ -17,8 +17,8 @@ if ARCH == "aarch64" then
 end
 
 function build()
-    c_cc_files = lmake_find("src/**.cc") .. lmake_find("test/**.cc")
-    asm_files = lmake_find("arch/aarch64/**.S")
+    c_cc_files = lmake_find("src/**.cc") .. lmake_find("src/**.c")
+    asm_files = lmake_find("src/**.S")
 
     lmake_set_compiler(COMPILER)
     lmake_set_compiler_flags(CLANG_TARGET .. CXX_FLAGS)
@@ -46,6 +46,6 @@ function qemu()
 end
 
 function clean()
-    obj_files = lmake_find("bin/*")
+    obj_files = lmake_find("bin/*") .. "kernel8.img"
     lmake_exec("rm " .. obj_files)
 end

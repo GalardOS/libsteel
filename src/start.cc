@@ -1,22 +1,12 @@
-#include "drivers/auxuart.hh"
+#include "mini_uart.hh"
 
-extern void main(int argc, char** argv);
+extern "C" 
+void gimme_all_your_lovin(void)
+{
+	uart_init();
+	uart_send_string("Hello, world!\r\n");
 
-typedef void (*ctor)();
-extern "C" ctor start_ctors;
-extern "C" ctor end_ctors;
-
-extern "C" void _start() {
-    // Call the constructor of global
-    //for(ctor* i = &start_ctors; i != &end_ctors; i++) {
-    //    (*i)();
-    //}
-
-    steel::auxuart::initialize();
-
-    // Call the main function 
-    /// TODO: think about the argc and argv 
-    main(0, nullptr);
-
-    while(true);
+	while (1) {
+		uart_send(uart_recv());
+	}
 }
