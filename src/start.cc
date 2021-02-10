@@ -1,3 +1,5 @@
+#include "drivers/auxuart.hh"
+
 extern void main(int argc, char** argv);
 
 typedef void (*ctor)();
@@ -9,6 +11,8 @@ extern "C" void _start() {
     //for(ctor* i = &start_ctors; i != &end_ctors; i++) {
     //    (*i)();
     //}
+
+    steel::auxuart::initialize();
 
     // Call the main function 
     /// TODO: think about the argc and argv 
