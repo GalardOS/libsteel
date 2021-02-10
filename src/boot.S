@@ -12,5 +12,3 @@ _boot:
 
 proc_hang: 
 	b 	proc_hang
-
-master:
