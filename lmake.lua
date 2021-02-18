@@ -17,7 +17,7 @@ if ARCH == "aarch64" then
 end
 
 function build()
-    c_cc_files = lmake_find("src/**.cc") .. lmake_find("src/**.c")
+    c_cc_files = lmake_find("src/**.cc") .. lmake_find("src/**.c") .. "test/test.cc"
     asm_files = lmake_find("src/**.S")
 
     lmake_set_compiler(COMPILER)

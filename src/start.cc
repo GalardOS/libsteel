@@ -1,12 +1,12 @@
 #include "mini_uart.hh"
 
+extern void main(int argc, char** argv);
+
 extern "C" 
 void gimme_all_your_lovin(void)
 {
-	uart_init();
-	uart_send_string("Hello, world!\r\n");
+	steel::uart_init();
+	steel::uart_send_string("Platform -> Raspberry PI 3\r\n");
 
-	while (1) {
-		uart_send(uart_recv());
-	}
+	main(0, nullptr);
 }

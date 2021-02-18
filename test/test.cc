@@ -1,5 +1,5 @@
-#include "../src/drivers/auxuart.hh"
+#include "mini_uart.hh"
 
 void main(int argc, char** argv) {
-    steel::auxuart::write("Hello World\r\n");
+    steel::uart_send_string("Hello World\r\n");
 }
