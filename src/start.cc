@@ -1,4 +1,4 @@
-#include "mini_uart.hh"
+#include "devices/mini_uart.hh"
 
 extern void main(int argc, char** argv);
 
