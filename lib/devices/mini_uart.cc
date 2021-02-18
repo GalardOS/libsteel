@@ -24,33 +24,7 @@ extern "C" {
 #define AUX_MU_BAUD_REG (PBASE+0x00215068)
 
 namespace steel {
-	void uart_send ( char c )
-	{
-		while(1) {
-			if(get32(AUX_MU_LSR_REG)&0x20) 
-				break;
-		}
-		put32(AUX_MU_IO_REG,c);
-	}
-
-	char uart_recv ( void )
-	{
-		while(1) {
-			if(get32(AUX_MU_LSR_REG)&0x01) 
-				break;
-		}
-		return(get32(AUX_MU_IO_REG)&0xFF);
-	}
-
-	void uart_send_string(const char* str)
-	{
-		for (int i = 0; str[i] != '\0'; i ++) {
-			uart_send((char)str[i]);
-		}
-	}
-
-	void uart_init ( void )
-	{
+	void uart_init ( void ) {
 		unsigned int selector;
 
 		selector = get32(GPFSEL1);
@@ -75,5 +49,23 @@ namespace steel {
 
 		put32(AUX_MU_CNTL_REG,3);               //Finally, enable transmitter and receiver
 	}
+
+	void uart_send (char c) {
+		while(!(get32(AUX_MU_LSR_REG) & 0x20));
+		put32(AUX_MU_IO_REG,c);
+	}
+
+	char uart_recv (void) {
+		while(!(get32(AUX_MU_LSR_REG) & 0x01));
+		return get32(AUX_MU_IO_REG) & 0xFF;
+	}
+
+	void uart_send_string(const char* str) {
+		for (int i = 0; str[i] != '\0'; i ++) {
+			uart_send((char)str[i]);
+		}
+	}
+
+	
 
 }
