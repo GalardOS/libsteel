@@ -4,8 +4,8 @@ COMPILER = "/bin/clang"
 
 LINKER = "/bin/aarch64-linux-gnu-ld"
 
-CXX_FLAGS = "-Wall -nostdlib -ffreestanding -Isrc -Isrc/klib -Isrc/kernel -mgeneral-regs-only"
-ASM_FLAGS = "-Isrc -nostdlib"
+CXX_FLAGS = "-Wall -nostdlib -ffreestanding -Ilib -Isrc/klib -Isrc/kernel -mgeneral-regs-only"
+ASM_FLAGS = "-Ilib -nostdlib"
 
 ARCH = "aarch64"
 CLANG_TARGET = ""
@@ -17,8 +17,8 @@ if ARCH == "aarch64" then
 end
 
 function build()
-    c_cc_files = lmake_find("src/**.cc") .. lmake_find("src/**.c") .. "test/test.cc"
-    asm_files = lmake_find("src/**.S")
+    c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c") .. "src/test.cc"
+    asm_files = lmake_find("lib/**.S")
 
     lmake_set_compiler(COMPILER)
     lmake_set_compiler_flags(CLANG_TARGET .. CXX_FLAGS)

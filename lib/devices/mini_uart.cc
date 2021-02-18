@@ -42,7 +42,7 @@ namespace steel {
 		return(get32(AUX_MU_IO_REG)&0xFF);
 	}
 
-	void uart_send_string(char* str)
+	void uart_send_string(const char* str)
 	{
 		for (int i = 0; str[i] != '\0'; i ++) {
 			uart_send((char)str[i]);
