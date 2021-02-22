@@ -99,3 +99,9 @@ vectors:
     ventry_inv       // IRQ 32-bit EL0
     ventry_inv       // FIQ 32-bit EL0
     ventry_inv       // Error 32-bit EL0
+
+.global setup_vector_table
+setup_vector_table:
+    adr x0, vectors
+    msr vbar_el1, x0 
+    ret

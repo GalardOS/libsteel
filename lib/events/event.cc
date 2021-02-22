@@ -32,8 +32,10 @@ extern "C" void exception_entry(uint64 type, uint64 esr, uint64 elr) {
     }
 }
 
+extern "C" void setup_vector_table();
+
 namespace steel {
     void __event_initialize() {
-
+        setup_vector_table();
     }
 }
