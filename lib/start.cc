@@ -1,11 +1,14 @@
 #include "devices/mini_uart.hh"
-#include "events/event.hh"
 
 extern void main(int argc, char** argv);
 
 typedef void (*ctor)();
 extern "C" ctor start_ctors;
 extern "C" ctor end_ctors;
+
+namespace steel {
+    void __event_initialize();
+}
 
 extern "C" 
 void gimme_all_your_lovin(void)

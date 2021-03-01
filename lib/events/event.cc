@@ -4,30 +4,32 @@
 #include "devices/mini_uart.hh"
  
 enum class exception_type : uint64 {
-    synchronous_exception = 0,
-    interrupt_exception = 1,
-    finterrupt_exception = 2,
-    serror_exception = 3
+    synchronous = 0,
+    interrupt = 1,
+    finterrupt = 2,
+    serror = 3
 };
 
 extern "C" void exception_entry(uint64 type, uint64 esr, uint64 elr) {
     auto etype = static_cast<exception_type>(type);
 
+    steel::uart_send_string("entered an exception: ");
+
     switch (etype) {
-        case exception_type::synchronous_exception: {
-            steel::uart_send_string("synchronous exception\r\n");
+        case exception_type::synchronous: {
+            steel::uart_send_string("synchronous\r\n");
         } break;
 
-        case exception_type::interrupt_exception: { 
-            steel::uart_send_string("interrupt exception\r\n");
+        case exception_type::interrupt: { 
+            steel::uart_send_string("interrupt\r\n");
         } break;
 
-        case exception_type::finterrupt_exception: {
-            steel::uart_send_string("finterrupt exception\r\n");
+        case exception_type::finterrupt: {
+            steel::uart_send_string("finterrupt\r\n");
         } break;
 
-        case exception_type::serror_exception: { 
-            steel::uart_send_string("serror exception\r\n");
+        case exception_type::serror: { 
+            steel::uart_send_string("serror\r\n");
         } break;
     }
 }
