@@ -10,34 +10,25 @@ enum class exception_type : uint64 {
     serror = 3
 };
 
-extern "C" void exception_entry(uint64 type, uint64 esr, uint64 elr) {
-    auto etype = static_cast<exception_type>(type);
+void(*events[4])(uint64, uint64);
 
+extern "C" void exception_entry(uint64 type, uint64 esr, uint64 elr) {
     steel::uart_send_string("entered an exception: ");
 
-    switch (etype) {
-        case exception_type::synchronous: {
-            steel::uart_send_string("synchronous\r\n");
-        } break;
-
-        case exception_type::interrupt: { 
-            steel::uart_send_string("interrupt\r\n");
-        } break;
-
-        case exception_type::finterrupt: {
-            steel::uart_send_string("finterrupt\r\n");
-        } break;
-
-        case exception_type::serror: { 
-            steel::uart_send_string("serror\r\n");
-        } break;
-    }
+    if(events[type] != nullptr)
+        events[type](esr, elr);
 }
 
 extern "C" void setup_vector_table();
 
+
 namespace steel {
     void __event_initialize() {
         setup_vector_table();
+    }
+
+    void event(exception_type type, event_handler handler) {
+        auto index = static_cast<uint64>(type);
+        events[index] = handler;
     }
 }

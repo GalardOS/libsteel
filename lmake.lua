@@ -1,5 +1,7 @@
 lmake_compatibility_version(1)
 
+BUILD_WITH_TESTS = false
+
 COMPILER = "/bin/clang"
 
 LINKER = "/bin/aarch64-linux-gnu-ld"
@@ -17,7 +19,12 @@ if ARCH == "aarch64" then
 end
 
 function build()
-    c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c") .. "src/test.cc"
+    if BUILD_WITH_TESTS == true then
+        c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c") .. "src/test.cc"
+    else
+        c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c")
+    end
+   
     asm_files = lmake_find("lib/**.S")
 
     lmake_set_compiler(COMPILER)
@@ -38,8 +45,9 @@ function build()
     lmake_exec("aarch64-linux-gnu-objcopy bin/kernel.elf -O binary kernel8.img")
 end
 
-function qemu()
-    -- Build if no kernel is compiled
+function test()
+    -- Build with tests if not built
+    BUILD_WITH_TESTS = true
     build()
 
     lmake_exec("qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio")

@@ -6,6 +6,8 @@ _boot:
     and    x0, x0,#0xFF        // Check processor id
     cbnz    x0, proc_hang        // Hang for all non-primary CPU
     
+    // Jump to 
+
     mov    sp, #0x8000
     bl    gimme_all_your_lovin
     b     proc_hang        // should never come here
