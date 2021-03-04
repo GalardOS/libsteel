@@ -18,13 +18,9 @@ if ARCH == "aarch64" then
     --LLD_TARGET = "-m aarch64elf "
 end
 
-function build()
-    if BUILD_WITH_TESTS == true then
-        c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c") .. "src/test.cc"
-    else
-        c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c")
-    end
-   
+function build_obj()
+    c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c")
+
     asm_files = lmake_find("lib/**.S")
 
     lmake_set_compiler(COMPILER)
@@ -34,6 +30,19 @@ function build()
 
     lmake_set_compiler_flags(CLANG_TARGET .. ASM_FLAGS)
     lmake_compile(asm_files)
+end
+
+function lib()
+    build_obj()
+
+    obj_files = lmake_find("bin/*.o")
+    lmake_exec("ar rcs bin/libsteel.a " .. obj_files)
+end
+
+function executable()
+    BUILD_WITH_TESTS = false
+
+    build_obj()
 
     obj_files = lmake_find("bin/*.o")
 
@@ -45,9 +54,10 @@ function build()
     lmake_exec("aarch64-linux-gnu-objcopy bin/kernel.elf -O binary kernel8.img")
 end
 
-function test()
+function executable()
     -- Build with tests if not built
     BUILD_WITH_TESTS = true
+
     build()
 
     lmake_exec("qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio")
