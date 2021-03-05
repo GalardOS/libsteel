@@ -18,10 +18,27 @@ if ARCH == "aarch64" then
     --LLD_TARGET = "-m aarch64elf "
 end
 
-function build_obj()
-    c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c")
+function compile_files(cpp_files, asm_files)
+    lmake_set_compiler(COMPILER)
+    lmake_set_compiler_flags(CLANG_TARGET .. CXX_FLAGS)
+    lmake_set_compiler_out("bin/%.o")
+    lmake_compile(cpp_files)
 
-    asm_files = lmake_find("lib/**.S")
+    lmake_set_compiler_flags(CLANG_TARGET .. ASM_FLAGS)
+    lmake_compile(asm_files)
+end
+
+function link_executable(obj_files, linker_path)
+    lmake_set_linker(LINKER)
+    lmake_set_linker_flags(LLD_TARGET .. "-T " .. linker_path)
+    lmake_set_linker_out("bin/kernel.elf")
+    lmake_link(obj_files)
+end
+
+function build_obj()
+    local c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c")
+
+    local asm_files = lmake_find("lib/**.S")
 
     lmake_set_compiler(COMPILER)
     lmake_set_compiler_flags(CLANG_TARGET .. CXX_FLAGS)
@@ -35,7 +52,7 @@ end
 function lib()
     build_obj()
 
-    obj_files = lmake_find("bin/*.o")
+    local obj_files = lmake_find("bin/*.o")
     lmake_exec("ar rcs bin/libsteel.a " .. obj_files)
 end
 
@@ -44,7 +61,7 @@ function executable()
 
     build_obj()
 
-    obj_files = lmake_find("bin/*.o")
+    local obj_files = lmake_find("bin/*.o")
 
     lmake_set_linker(LINKER)
     lmake_set_linker_flags(LLD_TARGET .. "-T linker/linker.ld")
