@@ -85,10 +85,10 @@ vectors:
     ventry_fint      // FIQ EL1t
     ventry_serr      // Error EL1t
 
-    ventry_inv       // Synchronous EL1h
-    ventry_inv       // IRQ EL1h
-    ventry_inv       // FIQ EL1h
-    ventry_inv       // Error EL1h
+    ventry_sync      // Synchronous EL1h
+    ventry_int       // IRQ EL1h
+    ventry_fint      // FIQ EL1h
+    ventry_serr      // Error EL1h
 
     ventry_inv       // Synchronous 64-bit EL0
     ventry_inv       // IRQ 64-bit EL0

@@ -81,7 +81,7 @@ function execute()
 
     executable()
 
-    lmake_exec("qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio")
+    lmake_exec("qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio -d int")
 end
 
 function clean()
