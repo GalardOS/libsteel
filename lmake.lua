@@ -38,6 +38,10 @@ end
 function build_obj()
     local c_cc_files = lmake_find("lib/**.cc") .. lmake_find("lib/**.c")
 
+    if BUILD_WITH_TESTS == true then
+        c_cc_files = c_cc_files .. "src/test.cc"
+    end
+
     local asm_files = lmake_find("lib/**.S")
 
     lmake_set_compiler(COMPILER)
@@ -57,7 +61,7 @@ function lib()
 end
 
 function executable()
-    BUILD_WITH_TESTS = false
+    BUILD_WITH_TESTS = true
 
     build_obj()
 
@@ -71,11 +75,11 @@ function executable()
     lmake_exec("aarch64-linux-gnu-objcopy bin/kernel.elf -O binary kernel8.img")
 end
 
-function executable()
+function execute()
     -- Build with tests if not built
     BUILD_WITH_TESTS = true
 
-    build()
+    executable()
 
     lmake_exec("qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio")
 end
