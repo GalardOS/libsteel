@@ -31,9 +31,15 @@ start_el2:
     eret
 
 start_el1:
-    mov    sp, #0x8000
-    bl    gimme_all_your_lovin
-    b     proc_hang        // should never come here
+    // Enable sharing stack with el0
+    mov x0, #0
+    msr SPSel, x0
+
+    // Setup the stack 
+    adr x0, _boot
+    mov sp, x0
+    bl gimme_all_your_lovin
+    b proc_hang        // should never come here
 
 proc_hang: 
     b     proc_hang

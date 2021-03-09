@@ -42,11 +42,20 @@ entry:
     save_registers_to_stack
 
     // Jump into C++ with info about exceptions
+    // parameter 1 previously set in entry for each type 
+    // of exception
     mrs x1, esr_el1
     mrs x2, elr_el1
     bl exception_entry
 
+    // Setup the return to be the next instruction
+    // Add 4 bytes to the return address (next instruction from cause)
+    mrs x0, elr_el1
+    add x0, x0, #4
+    msr elr_el1, x0
+
     get_registers_from_stack
+
     eret
 
 .macro ventry_sync
