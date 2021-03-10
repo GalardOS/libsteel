@@ -48,12 +48,6 @@ entry:
     mrs x2, elr_el1
     bl exception_entry
 
-    // Setup the return to be the next instruction
-    // Add 4 bytes to the return address (next instruction from cause)
-    mrs x0, elr_el1
-    add x0, x0, #4
-    msr elr_el1, x0
-
     get_registers_from_stack
 
     eret
@@ -87,8 +81,8 @@ entry:
     eret
 .endm
 
-.globl vectors 
-vectors:
+.align 11
+__vectors:
     ventry_sync      // Synchronous EL1t
     ventry_int       // IRQ EL1t
     ventry_fint      // FIQ EL1t
@@ -111,6 +105,6 @@ vectors:
 
 .global setup_vector_table
 setup_vector_table:
-    adr x0, vectors
+    adr x0, __vectors
     msr vbar_el1, x0 
     ret
