@@ -52,6 +52,8 @@ entry:
 
 .macro ventry_sync
     .align 7
+    // Registers need to be saved before doing anything with
+    // them
     save_registers_to_stack
     mov x0, #0
     b entry
