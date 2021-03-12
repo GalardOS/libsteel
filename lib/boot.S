@@ -32,7 +32,7 @@ start_el2:
 
 start_el1:
     // Enable sharing stack with el0
-    mov x0, #0
+    mov x0, #1
     msr SPSel, x0
 
     // Setup the stack 

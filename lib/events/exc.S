@@ -39,8 +39,6 @@
 .endm
 
 entry: 
-    save_registers_to_stack
-
     // Jump into C++ with info about exceptions
     // parameter 1 previously set in entry for each type 
     // of exception
@@ -54,6 +52,7 @@ entry:
 
 .macro ventry_sync
     .align 7
+    save_registers_to_stack
     mov x0, #0
     b entry
 .endm
