@@ -11,6 +11,8 @@ namespace steel {
         void* allocate(uint32 size);
         void deallocate(void* ptr);
     private:
+        uint32 find_empty_block_with_size(uint32 size);
+
         // Information about the buffer
         uint64* buffer_start;
         uint32 buffer_element_count;
